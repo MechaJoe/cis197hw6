@@ -15,7 +15,6 @@ export default function Login() {
       navigate('/')
     } else {
       setRetry(true)
-      console.log(retry)
       alert('Invalid username or password')
     }
   }

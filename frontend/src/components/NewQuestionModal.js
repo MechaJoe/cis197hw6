@@ -6,9 +6,9 @@ export default function NewQuestionModal(props) {
   const { onHide } = props
   const [question, setQuestion] = React.useState('')
   const handleSubmit = async e => {
-    const { data: result } = await axios.post('/api/questions/add', { questionText: question }) // POST request
-    if (result === 'Question added') {
-      console.log('Question added')
+    const { data: result } = await axios.post('/api/questions/add', { questionText: question })
+    if (result !== 'Question added') {
+      alert('Error: Question not added. Double-check all inputs.')
     }
   }
   return (
