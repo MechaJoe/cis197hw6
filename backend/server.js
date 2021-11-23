@@ -38,6 +38,10 @@ app.use(bodyParser.json())
 
 app.use(express.static('dist')) // set the static folder
 
+app.use((err, req, res, next) => {
+  res.status(500).send('Something broke!')
+})
+
 // set favicon
 app.get('/favicon.ico', (req, res) => {
   res.status(404).send()
@@ -46,10 +50,6 @@ app.get('/favicon.ico', (req, res) => {
 // set the initial entry point
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'))
-})
-
-app.use((err, req, res, next) => {
-  res.status(500).send('Something broke!')
 })
 
 app.listen(3000, () => {

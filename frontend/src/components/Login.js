@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
-const Login = () => {
+export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [succeeded, setSucceeded] = useState(false)
-
-  const createUser = async () => {
-    const { data } = await axios.post('/account/signup', { username, password })
-    if (data === 'user created') {
-      setSucceeded(true)
-    }
-  }
+  const [retry, setRetry] = useState(false)
+  const navigate = useNavigate()
 
   const loginUser = async () => {
     const { data } = await axios.post('/account/login', { username, password })
     if (data === 'user logged in successfully') {
-      setSucceeded(true)
+      navigate('/')
+    } else {
+      setRetry(true)
+      console.log(retry)
+      alert('Invalid username or password')
     }
   }
 
   return (
     <>
       <>
+        {retry ? <p>Username or password are incorrect.</p> : null}
       </>
-      username: <input onChange={e => setUsername(e.target.value)} />
+      username:
+      {' '}
+      <input onChange={e => setUsername(e.target.value)} />
       <br />
-      password: <input onChange={e => setPassword(e.target.value)} />
+      password:
+      {' '}
+      <input onChange={e => setPassword(e.target.value)} />
       <br />
-      <button onClick={loginUser}> Login </button>
-      <p> succeeded: {`${succeeded}`} </p>
+      <Button type="button" onClick={loginUser}> Login </Button>
+      <div>
+        <Link to="/signup">Don&apos;t have an account? Sign up now</Link>
+      </div>
     </>
   )
 }
-
-export default App
