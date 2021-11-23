@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const session = require('cookie-session')
 const bodyParser = require('body-parser')
+const path = require('path')
 const UserRouter = require('./routes/account')
 const QuestionRouter = require('./routes/api')
 
@@ -34,6 +35,18 @@ app.post('/', (req, res) => {
 app.use('/account', UserRouter)
 app.use('/api', QuestionRouter)
 app.use(bodyParser.json())
+
+app.use(express.static('dist')) // set the static folder
+
+// set favicon
+app.get('/favicon.ico', (req, res) => {
+  res.status(404).send()
+})
+
+// set the initial entry point
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'))
+})
 
 app.use((err, req, res, next) => {
   res.status(500).send('Something broke!')
